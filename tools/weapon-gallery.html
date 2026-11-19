@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weapon gallery</title>
+  <style>
+    body { margin: 0; background: #11150f; color: #e8eedf; font-family: "Segoe UI", system-ui, sans-serif; }
+    h1 { font-size: 18px; margin: 14px 16px 4px; }
+    p { margin: 0 16px 8px; color: #93a089; font-size: 13px; }
+    canvas { display: block; width: 100%; }
+  </style>
+</head>
+<body>
+  <h1>Outbreak Forge: weapon art</h1>
+  <p>Dev page: every weapon animated (idle, firing with recoil and muzzle flash, reloading).</p>
+  <canvas id="c"></canvas>
+  <script type="module">
+    import { WEAPONS } from "../src/weapons.js";
+    import { drawWeapon } from "../src/weaponArt.js";
+    const c = document.getElementById("c"), g = c.getContext("2d");
+    const cols = 2, cellW = 380, cellH = 150;
+    const rows = Math.ceil(WEAPONS.length / cols);
+    c.width = cols * cellW * 2; c.height = rows * cellH * 2;
+    c.style.maxWidth = cols * cellW + "px";
+    let spin = 0;
+    function frame(t) {
+      t /= 1000;
+      spin += 0.6;
+      g.setTransform(2, 0, 0, 2, 0, 0);
+      g.fillStyle = "#11150f"; g.fillRect(0, 0, c.width, c.height);
+      WEAPONS.forEach((w, i) => {
+        const x = (i % cols) * cellW, y = Math.floor(i / cols) * cellH;
+        g.fillStyle = "#1d241b"; g.fillRect(x + 6, y + 6, cellW - 12, cellH - 12);
+        g.fillStyle = "#e8eedf"; g.font = "bold 14px Segoe UI"; g.fillText(w.name, x + 18, y + 28);
+        const phase = (t + i * 0.37) % 3;
+        const recoil = phase < 1 ? Math.max(0, 1 - ((phase * 8) % 1) * 2) : 0;
+        const reload = phase > 1.8 ? (phase - 1.8) / 1.2 : -1;
+        g.fillStyle = "#93a089"; g.font = "12px Segoe UI";
+        g.fillText(phase < 1 ? "firing" : reload >= 0 ? "reloading" : "idle", x + cellW - 80, y + 28);
+        drawWeapon(g, w.id, x + cellW / 2, y + cellH / 2 + 12, 300, { t, recoil, reload, spin: w.id === "minigun" && phase < 1 ? spin : 0 });
+      });
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  </script>
+</body>
+</html>
