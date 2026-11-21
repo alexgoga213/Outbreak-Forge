@@ -11,7 +11,7 @@
   <img src="assets/weapons.jpg" width="49%" alt="All ten weapons drawn in code: pistol to plasma cannon">
 </p>
 
-### ▶ [Play it in your browser](https://alexgoga213.github.io/outbreak-forge/)
+### ▶ [Play it in your browser](https://alexgoga213.github.io/Outbreak-Forge/)
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES%20modules-F7DF1E?logo=javascript&logoColor=black)
 ![Canvas](https://img.shields.io/badge/HTML5-Canvas-E34F26?logo=html5&logoColor=white)
@@ -88,7 +88,7 @@
 ## 🛠️ How it's built
 
 ```
-outbreak-forge/
+Outbreak-Forge/
 ├── index.html / styles.css
 ├── src/
 │   ├── main.js      # game loop (requestAnimationFrame, clamped dt, HiDPI canvas)
